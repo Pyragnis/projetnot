@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
 import { Text, View, Image } from 'react-native';
 import axios from 'axios';
-
+import { useRoute } from '@react-navigation/native';
 const Container = styled.View`
   flex: 1;
   background-color: #f2f2f2;
+  justify-content: center;
+  align-items: center;
 `;
 
 const ContentContainer = styled.View`
@@ -33,9 +35,12 @@ const TextValue = styled.Text`
   margin-top: 5px;
 `;
 
-const PokemonDetails = ({ route }) => {
+
+
+const PokemonDetails = () => {
+  const route = useRoute()
   const [pokemon, setPokemon] = useState(null);
-  const id = route.params.id;
+  const  id  = route.params.id;
   useEffect(() => {
     
     axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`)

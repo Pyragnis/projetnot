@@ -73,9 +73,10 @@ const Pokemon = () => {
     setFilteredPokemonList(filteredPokemon);
   }
   const navigation = useNavigation();
-  const handlePress = (id) => {
-    navigation.navigate('DetailPokemon', { id: id });
+  const handlePress = (pokemonId) => {
+    navigation.navigate('DetailPokemon', { id: pokemonId });
   }
+  
 
   const renderPokemonItem = ({ item }) => {
     const pokemonId = item.url.split('/')[6];
@@ -85,7 +86,8 @@ const Pokemon = () => {
         <PokemonName>{item.name}</PokemonName>
         <PokemonImagesContainer>
           <PokemonImage source={{ uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png` }} />
-          <PokemonButton onPress={handlePress(pokemonId)} title="detail" key={pokemonId}/>
+          <PokemonButton onPress={() => handlePress(pokemonId)} title="detail" key={pokemonId}/>
+
           <PokemonImage source={{ uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${pokemonId}.png` }} />
         </PokemonImagesContainer>
       </PokemonItem>
