@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
 import axios from 'axios';
+import Sound from 'react-native-sound';
 
 const Container = styled.View`
   flex: 1;
@@ -62,8 +63,13 @@ const MusicPokemon = () => {
   }, []);
 
   const handlePlayButtonPress = url => {
-    // play the music using a third-party library, e.g. react-native-sound
-    console.log(`Playing music at URL: ${url}`);
+    const sound = new Sound(url, '', error => {
+      if (error) {
+        console.log('Error loading sound: ', error);
+      } else {
+        sound.play();
+      }
+    });
   };
 
   const renderMusicItem = ({ item }) => {
