@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import { TextInput } from 'react-native';
+import { TextInput,TouchableOpacity } from 'react-native';
+import PokemonButton from '../PokemonButton';
+import { useNavigation } from '@react-navigation/native';
 
 const PokemonContainer = styled.View`
   flex: 1;
@@ -70,17 +72,20 @@ const Pokemon = () => {
     const filteredPokemon = pokemonList.filter(pokemon => pokemon.name.includes(term.toLowerCase()));
     setFilteredPokemonList(filteredPokemon);
   }
+  const navigation = useNavigation();
   const handlePress = (id) => {
     navigation.navigate('DetailPokemon', { id: id });
   }
 
   const renderPokemonItem = ({ item }) => {
     const pokemonId = item.url.split('/')[6];
+    console.log(pokemonId);
     return (
       <PokemonItem>
         <PokemonName>{item.name}</PokemonName>
         <PokemonImagesContainer>
           <PokemonImage source={{ uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png` }} />
+          <PokemonButton onPress={handlePress(pokemonId)} title="detail" key={pokemonId}/>
           <PokemonImage source={{ uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${pokemonId}.png` }} />
         </PokemonImagesContainer>
       </PokemonItem>

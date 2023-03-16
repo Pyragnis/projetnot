@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
 import { Text, View, Image } from 'react-native';
+import axios from 'axios';
 
 const Container = styled.View`
   flex: 1;
@@ -34,12 +35,12 @@ const TextValue = styled.Text`
 
 const PokemonDetails = ({ route }) => {
   const [pokemon, setPokemon] = useState(null);
-
+  const id = route.params.id;
   useEffect(() => {
-    const { id } = route.params;
-    fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
-      .then(response => response.json())
-      .then(data => {
+    
+    axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`)
+      .then(response => {
+        const data = response.data;
         const id = data.id;
         const name = data.name;
         const image = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
