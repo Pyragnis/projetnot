@@ -70,6 +70,9 @@ const Pokemon = () => {
     const filteredPokemon = pokemonList.filter(pokemon => pokemon.name.includes(term.toLowerCase()));
     setFilteredPokemonList(filteredPokemon);
   }
+  const handlePress = (id) => {
+    navigation.navigate('DetailPokemon', { id: id });
+  }
 
   const renderPokemonItem = ({ item }) => {
     const pokemonId = item.url.split('/')[6];

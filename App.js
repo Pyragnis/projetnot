@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Text, View,ScrollView,Button } from 'react-native';
 import Pokedex from './src/screens/Pokedex';
 import PokemonOst from './src/screens/PokemonOst';
+import PokemonData from './src/screens/DetailPokemon';
 
 
 
@@ -35,6 +36,11 @@ export default function App() {
         <PokemonOst/>
     );
   }
+  function PokeDetail() {
+    return (
+        <PokemonData/>
+    );
+  }
 
   
   return (
@@ -43,6 +49,7 @@ export default function App() {
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Pokedex" component={PokedexPage} />
       <Stack.Screen name="PokemonOst" component={PokeMusic} />
+      <Stack.Screen name="DetailPokemon" component={PokeDetail} />
     </Stack.Navigator>
   </NavigationContainer>
   );
