@@ -1,14 +1,14 @@
 import React from 'react'
 import { Text, View,ScrollView } from 'react-native';
 import HeaderPokemon from '../../components/HeaderPokemon';
-import PokemonApi from '../../components/PokemonApi';
+import MusicPokemon from '../../components/MusicPokemon';
 
 
 function Pokedex() {
   return (
     <View style={{ flex: 1 }}>
       <HeaderPokemon/>
-      <PokemonApi/>
+      <MusicPokemon/>
     </View>
   )
 }

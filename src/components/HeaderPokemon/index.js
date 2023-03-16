@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
+import { useNavigation } from '@react-navigation/native';
 
 const Container = styled.View`
   flex-direction: row;
@@ -10,8 +11,15 @@ const Container = styled.View`
   background-color: #f44336;
 `;
 
+const LogoContainer = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  margin-left:15%;
+`;
+
 const Logo = styled.Image`
-  width: 100px;
+  width: 150px;
   height: 50px;
 `;
 
@@ -33,13 +41,21 @@ const ButtonText = styled.Text`
   font-weight: bold;
 `;
 
-const HeaderPokemon = ({ title, onPress }) => {
+const HeaderPokemon = ({ title }) => {
+  const navigation = useNavigation();
+
+  const handlePress = () => {
+    navigation.navigate('PokemonOst');
+  };
+
   return (
     <Container>
-      <Logo source={require('./assets/pokemon-logo.png')} />
+      <LogoContainer>
+        <Logo source={require('../../../public/PokemonLogo.png')} />
+      </LogoContainer>
       <Title>{title}</Title>
-      <Button onPress={onPress}>
-        <ButtonText>More</ButtonText>
+      <Button onPress={handlePress}>
+        <ButtonText>OST</ButtonText>
       </Button>
     </Container>
   );

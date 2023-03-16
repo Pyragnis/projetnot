@@ -1,76 +1,109 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, StyleSheet, FlatList } from 'react-native';
-import styled from 'styled-components/native';
+import styled from 'styled-components';
 import axios from 'axios';
+import { TextInput } from 'react-native';
 
-const Container = styled.View`
+const PokemonContainer = styled.View`
   flex: 1;
-  background-color: #fff;
+  align-items: center;
+  justify-content: center;
 `;
 
-const ListItem = styled.TouchableOpacity`
-  flex-direction: row;
-  padding: 10px;
+const PokemonList = styled.FlatList`
+  width: 100%;
+`;
+
+const PokemonItem = styled.View`
+  padding: 16px;
   border-bottom-width: 1px;
-  border-color: #ccc;
+  border-color: #ddd;
 `;
 
-const ImageContainer = styled.View`
-  padding-right: 10px;
-`;
-
-const PokemonImage = styled.Image`
-  width: 80px;
-  height: 80px;
-`;
-
-const InfoContainer = styled.View`
-  flex: 1;
-`;
-
-const NameText = styled.Text`
+const PokemonName = styled.Text`
   font-size: 18px;
   font-weight: bold;
 `;
 
-const TypeText = styled.Text`
-  color: #555;
+const PokemonImagesContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 8px;
 `;
 
-const PokemonApi = () => {
+const PokemonImage = styled.Image`
+  width: 100px;
+  height: 100px;
+`;
+
+const SearchInput = styled.TextInput`
+  margin-top: 16px;
+  padding: 8px;
+  width: 80%;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+`;
+
+const Pokemon = () => {
   const [pokemonList, setPokemonList] = useState([]);
+  const [filteredPokemonList, setFilteredPokemonList] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [offset, setOffset] = useState(0);
+  const [limit, setLimit] = useState(20);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    axios.get('https://pokeapi.co/api/v2/pokemon?limit=50')
+    setLoading(true);
+    axios.get(`https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`)
       .then(response => {
-        setPokemonList(response.data.results);
+        setPokemonList([...pokemonList, ...response.data.results]);
+        setFilteredPokemonList([...filteredPokemonList, ...response.data.results]);
+        setLoading(false);
       })
       .catch(error => {
         console.log(error);
+        setLoading(false);
       });
-  }, []);
+  }, [offset]);
 
-  const renderItem = ({ item }) => (
-    <ListItem>
-      <ImageContainer>
-        <PokemonImage source={{ uri: `https://pokeres.bastionbot.org/images/pokemon/${item.url.split('/')[6]}.png` }} />
-      </ImageContainer>
-      <InfoContainer>
-        <NameText>{item.name}</NameText>
-        <TypeText>{'Type: unknown'}</TypeText>
-      </InfoContainer>
-    </ListItem>
-  );
+  const handleSearchTermChange = term => {
+    setSearchTerm(term);
+    const filteredPokemon = pokemonList.filter(pokemon => pokemon.name.includes(term.toLowerCase()));
+    setFilteredPokemonList(filteredPokemon);
+  }
+
+  const renderPokemonItem = ({ item }) => {
+    const pokemonId = item.url.split('/')[6];
+    return (
+      <PokemonItem>
+        <PokemonName>{item.name}</PokemonName>
+        <PokemonImagesContainer>
+          <PokemonImage source={{ uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png` }} />
+          <PokemonImage source={{ uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${pokemonId}.png` }} />
+        </PokemonImagesContainer>
+      </PokemonItem>
+    );
+  };
+
+  const handleLoadMore = () => {
+    setOffset(offset + limit);
+  }
 
   return (
-    <Container>
-      <FlatList
-        data={pokemonList}
-        renderItem={renderItem}
-        keyExtractor={item => item.name}
+    <PokemonContainer>
+      <SearchInput
+        placeholder="Search Pokemon"
+        value={searchTerm}
+        onChangeText={handleSearchTermChange}
       />
-    </Container>
+      <PokemonList
+        data={filteredPokemonList}
+        keyExtractor={item => item.name}
+        renderItem={renderPokemonItem}
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.5}
+      />
+    </PokemonContainer>
   );
 };
 
-export default PokemonApi;
+export default Pokemon;

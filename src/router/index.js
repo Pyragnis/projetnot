@@ -1,11 +1,10 @@
 
 import React from 'react';
-import Home from './src/screens/home'
+import Home from '../screens/home'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Text, View,ScrollView,Button } from 'react-native';
-import Pokedex from './src/screens/Pokedex';
-import PokemonOst from './src/screens/PokemonOst';
+import Pokedex from '../screens/Pokedex';
 
 
 
@@ -25,14 +24,9 @@ export default function App() {
   }
   
   
-  function PokedexPage() {
+  function Pokedex() {
     return (
-        <Pokedex/>
-    );
-  }
-  function PokeMusic() {
-    return (
-        <PokemonOst/>
+      <Pokedex/>
     );
   }
 
@@ -41,8 +35,7 @@ export default function App() {
     <NavigationContainer>
     <Stack.Navigator initialRouteName="Home">
       <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="Pokedex" component={PokedexPage} />
-      <Stack.Screen name="PokemonOst" component={PokeMusic} />
+      <Stack.Screen name="Pokedex" component={Pokedex} />
     </Stack.Navigator>
   </NavigationContainer>
   );
