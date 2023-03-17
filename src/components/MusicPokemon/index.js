@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components/native';
-import axios from 'axios';
 import Sound from 'react-native-sound';
+import { Alert } from 'react-native';
+import Dialog, { DialogContent } from 'react-native-popup-dialog';
 
 const Container = styled.View`
   flex: 1;
@@ -31,54 +32,72 @@ const PlayButton = styled.TouchableOpacity`
   border-radius: 8px;
 `;
 
+const StopButton = styled.TouchableOpacity`
+  margin-top: 8px;
+  padding: 8px 16px;
+  background-color: #ccc;
+  border-radius: 8px;
+`;
+
 const PlayButtonText = styled.Text`
   color: #fff;
   font-size: 16px;
   font-weight: bold;
 `;
 
+const StopButtonText = styled.Text`
+  color: #000;
+  font-size: 16px;
+  font-weight: bold;
+`;
+
 const MusicPokemon = () => {
-  const [musicList, setMusicList] = useState([]);
+  const [musicList, setMusicList] = useState([
+    { name: 'Pokemon Rouge/bleu', file: require('../../../public/audio/rouge.mp3') },
+    { name: 'Pokemon Diamant/perle', file: require('../../../public/audio/diamant.mp3') },
+    { name: 'Pokemon Argent/or', file: require('../../../public/audio/argent.mp3') },
+    { name: 'Pokemon noir/blanc', file: require('../../../public/audio/noir.mp3') },
+    { name: 'Pokemon ruby/saphir alpha', file: require('../../../public/audio/ruby.mp3') },
+  ]);
 
-  useEffect(() => {
-    axios.get('https://pokeapi.co/api/v2/version-group/1')
-      .then(response => {
-        const versionIds = response.data.versions.map(version => version.url.split('/')[6]);
-        const musicRequests = versionIds.map(versionId => axios.get(`https://pokeapi.co/api/v2/version/${versionId}`));
-        Promise.all(musicRequests)
-          .then(responses => {
-            const musicList = responses.map(response => ({
-              name: response.data.names.find(name => name.language.name === 'en').name,
-              url: response.data.names.find(name => name.language.name === 'en').name.toLowerCase().replace(/\s+/g, '-') + '.mp3',
-            }));
-            setMusicList(musicList);
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }, []);
+  const [sound, setSound] = useState(null);
 
-  const handlePlayButtonPress = url => {
-    const sound = new Sound(url, '', error => {
+  const handlePlayButtonPress = (file, name) => {
+    if (sound) {
+      sound.stop();
+      setSound(null);
+    }
+
+    const newSound = new Sound(file, error => {
       if (error) {
         console.log('Error loading sound: ', error);
       } else {
-        sound.play();
+        newSound.play();
+        setSound(newSound);
+        Alert.alert(`Musique de ${name}`, 'La musique est lancée');
       }
     });
+  };
+
+  const handleStopButtonPress = () => {
+    if (sound) {
+      sound.stop();
+      setSound(null);
+    }
   };
 
   const renderMusicItem = ({ item }) => {
     return (
       <MusicItem>
         <MusicName>{item.name}</MusicName>
-        <PlayButton onPress={() => handlePlayButtonPress(item.url)}>
+        <PlayButton onPress={() => handlePlayButtonPress(item.file, item.name)}>
           <PlayButtonText>Play</PlayButtonText>
         </PlayButton>
+        {sound && (
+          <StopButton onPress={handleStopButtonPress}>
+            <StopButtonText>Stop</StopButtonText>
+          </StopButton>
+        )}
       </MusicItem>
     );
   };

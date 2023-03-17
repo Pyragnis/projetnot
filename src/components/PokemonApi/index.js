@@ -80,7 +80,6 @@ const Pokemon = () => {
 
   const renderPokemonItem = ({ item }) => {
     const pokemonId = item.url.split('/')[6];
-    console.log(pokemonId);
     return (
       <PokemonItem>
         <PokemonName>{item.name}</PokemonName>
