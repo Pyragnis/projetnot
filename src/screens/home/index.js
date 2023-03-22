@@ -1,16 +1,32 @@
-import React from 'react'
+import React from 'react';
+import styled from 'styled-components/native';
+import Video from 'react-native-video';
 import { Text, View,ScrollView,Button } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
+import { useNavigation } from '@react-navigation/native';
 
-
-
-
-function index() {
+const HomePage = () => {
+  const navigation = useNavigation();
   return (
-    <ScrollView style={{ flex: 1 }}>
-      
-    </ScrollView>
-  )
-}
+    <Container>
+      <BackgroundVideo source={require('../../../public/video/background.mp4')} resizeMode="cover" repeat={true} />
+      <Button
+          title="go to the project pokedex"
+          onPress={() => navigation.navigate('Pokedex')}
+        />
+    </Container>
+  );
+};
 
-export default index
+const Container = styled.View`
+  flex: 1;
+`;
+
+const BackgroundVideo = styled(Video)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+`;
+
+export default HomePage;

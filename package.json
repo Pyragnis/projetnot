@@ -20,7 +20,10 @@
     "react-native-screens": "^3.20.0",
     "react-native-sound": "^0.11.2",
     "react-native-sound-player": "^0.13.2",
-    "styled-components": "^5.3.9"
+    "react-native-vector-icons": "^9.2.0",
+    "react-native-video": "^5.2.1",
+    "styled-components": "^5.3.9",
+    "three": "^0.150.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

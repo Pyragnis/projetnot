@@ -15,13 +15,9 @@ export default function App() {
 
   function HomeScreen({ navigation }) {
     return (
-      <View>
         <Home/>
-        <Button
-          title="go to the project pokedex"
-          onPress={() => navigation.navigate('Pokedex')}
-        />
-      </View>
+        
+      
     );
   }
   
