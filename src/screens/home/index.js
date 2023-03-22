@@ -9,13 +9,32 @@ const HomePage = () => {
   return (
     <Container>
       <BackgroundVideo source={require('../../../public/video/background.mp4')} resizeMode="cover" repeat={true} />
-      <Button
-          title="go to the project pokedex"
-          onPress={() => navigation.navigate('Pokedex')}
-        />
+      <StyledButton onPress={() => navigation.navigate('Pokedex')}>
+      <ButtonText>Go to the Pokedex</ButtonText>
+    </StyledButton>
     </Container>
-  );
+  ); 
 };
+
+const StyledButton = styled.TouchableOpacity`
+  background-color: #ffcb05;
+  border-radius: 20px;
+  padding: 10px 20px;
+  margin-top: 20px;
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+  margin-left:20%;
+  margin-bottom:10%;
+`;
+
+const ButtonText = styled.Text`
+  font-size: 18px;
+  color: #000;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-top:10px;
+`;
 
 const Container = styled.View`
   flex: 1;
