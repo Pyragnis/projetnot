@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
 const Container = styled.View`
   flex: 1;
-  background-color: #f2f2f2;
+  background-color: #f2f2fd;
   justify-content: center;
   align-items: center;
 `;
